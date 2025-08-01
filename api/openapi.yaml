@@ -1,0 +1,422 @@
+openapi: 3.0.2
+info:
+  title: API Kancelarii Prawnej
+  description: Kompleksowe API do zarządzania kancelariami prawnymi
+  version: 1.0.0
+  contact:
+    name: Zespół Deweloperski
+    email: dev@kancelaria-api.pl
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8000
+    description: Serwer deweloperski
+  - url: https://api.kancelaria.pl
+    description: Serwer produkcyjny
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Sprawdza stan aplikacji
+      tags:
+        - System
+      responses:
+        '200':
+          description: Aplikacja działa prawidłowo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  version:
+                    type: string
+                    example: 1.0.0
+                  environment:
+                    type: string
+                    example: development
+
+  /api/v1/kancelarie:
+    get:
+      summary: Pobierz listę kancelarii
+      description: Zwraca listę wszystkich kancelarii z paginacją
+      tags:
+        - Kancelarie
+      parameters:
+        - name: skip
+          in: query
+          description: Liczba rekordów do pominięcia
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          description: Maksymalna liczba rekordów
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+      responses:
+        '200':
+          description: Lista kancelarii
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LawFirm'
+
+    post:
+      summary: Utwórz nową kancelarię
+      description: Tworzy nową kancelarię prawną
+      tags:
+        - Kancelarie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LawFirmCreate'
+      responses:
+        '201':
+          description: Kancelaria została utworzona
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawFirm'
+        '422':
+          description: Błąd walidacji danych
+
+  /api/v1/kancelarie/{kancelaria_id}:
+    get:
+      summary: Pobierz szczegóły kancelarii
+      description: Zwraca szczegóły kancelarii wraz ze statystykami
+      tags:
+        - Kancelarie
+      parameters:
+        - name: kancelaria_id
+          in: path
+          required: true
+          description: ID kancelarii
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Szczegóły kancelarii
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawFirmWithStats'
+        '404':
+          description: Kancelaria nie została znaleziona
+
+    put:
+      summary: Aktualizuj kancelarię
+      description: Aktualizuje dane kancelarii
+      tags:
+        - Kancelarie
+      parameters:
+        - name: kancelaria_id
+          in: path
+          required: true
+          description: ID kancelarii
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LawFirmUpdate'
+      responses:
+        '200':
+          description: Kancelaria została zaktualizowana
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LawFirm'
+        '404':
+          description: Kancelaria nie została znaleziona
+
+    delete:
+      summary: Usuń kancelarię
+      description: Usuwa kancelarię (operacja nieodwracalna)
+      tags:
+        - Kancelarie
+      parameters:
+        - name: kancelaria_id
+          in: path
+          required: true
+          description: ID kancelarii
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Kancelaria została usunięta
+        '404':
+          description: Kancelaria nie została znaleziona
+
+components:
+  schemas:
+    LawFirm:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 255
+        address:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        tax_id:
+          type: string
+          nullable: true
+          description: NIP
+        registration_number:
+          type: string
+          nullable: true
+          description: KRS
+        website:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+
+    LawFirmCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        address:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        tax_id:
+          type: string
+          nullable: true
+        registration_number:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      required:
+        - name
+
+    LawFirmUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        tax_id:
+          type: string
+          nullable: true
+        registration_number:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+
+    LawFirmWithStats:
+      allOf:
+        - $ref: '#/components/schemas/LawFirm'
+        - type: object
+          properties:
+            clients_count:
+              type: integer
+              minimum: 0
+            cases_count:
+              type: integer
+              minimum: 0
+            active_cases_count:
+              type: integer
+              minimum: 0
+
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        law_firm_id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+          nullable: true
+        first_name:
+          type: string
+          maxLength: 100
+        last_name:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        pesel:
+          type: string
+          maxLength: 11
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - law_firm_id
+        - first_name
+        - last_name
+        - created_at
+        - updated_at
+
+    Case:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        law_firm_id:
+          type: string
+          format: uuid
+        client_id:
+          type: string
+          format: uuid
+        assigned_lawyer_id:
+          type: string
+          format: uuid
+          nullable: true
+        case_number:
+          type: string
+          maxLength: 100
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        case_type:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [active, pending, closed, archived]
+        priority:
+          type: string
+          enum: [low, medium, high, urgent]
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        end_date:
+          type: string
+          format: date
+          nullable: true
+        court_name:
+          type: string
+          nullable: true
+        case_value:
+          type: number
+          format: float
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - law_firm_id
+        - client_id
+        - case_number
+        - title
+        - status
+        - priority
+        - created_at
+        - updated_at
+
+tags:
+  - name: System
+    description: Endpointy systemowe
+  - name: Kancelarie
+    description: Zarządzanie kancelariami prawnymi
+  - name: Klienci
+    description: Zarządzanie klientami
+  - name: Sprawy
+    description: Zarządzanie sprawami prawnymi

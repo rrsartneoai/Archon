@@ -1,11 +1,2 @@
-# Folders
-workbench
-__pycache__
-venv
-.langgraph_api
-
-# Files
+node_modules/
 .env
-.env.temp
-.env.test
-env_vars.json

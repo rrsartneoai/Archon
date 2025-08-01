@@ -1,325 +1,205 @@
-# Archon - AI Agent Builder
 
-<img src="public/Archon.png" alt="Archon Logo" />
 
-<div align="center" style="margin-top: 20px;margin-bottom: 30px">
-
-<h3>🚀 **CURRENT VERSION** 🚀</h3>
-
-**[ V6 - Tool Library and MCP Integration ]**
-*Prebuilt tools, examples, and MCP server integration*
-
-</div>
-
-> **🔄 IMPORTANT UPDATE (March 31st)**: Archon now includes a library of prebuilt tools, examples, and MCP server integrations. Archon can now incorporate these resources when building new agents, significantly enhancing capabilities and reducing hallucinations. Note that the examples/tool library for Archon is just starting out. Please feel free to contribute examples, MCP servers, and prebuilt tools!
-
-Archon is the world's first **"Agenteer"**, an AI agent designed to autonomously build, refine, and optimize other AI agents. 
-
-It serves both as a practical tool for developers and as an educational framework demonstrating the evolution of agentic systems.
-Archon will be developed in iterations, starting with just a simple Pydantic AI agent that can build other Pydantic AI agents,
-all the way to a full agentic workflow using LangGraph that can build other AI agents with any framework.
-Through its iterative development, Archon showcases the power of planning, feedback loops, and domain-specific knowledge in creating robust AI agents.
-
-## Important Links
-
-- The current version of Archon is V6 as mentioned above - see [V6 Documentation](iterations/v6-tool-library-integration/README.md) for details.
-
-- I **just** created the [Archon community](https://thinktank.ottomator.ai/c/archon/30) forum over in the oTTomator Think Tank! Please post any questions you have there!
-
-- [GitHub Kanban board](https://github.com/users/coleam00/projects/1) for feature implementation and bug squashing.
-
-## Vision
-
-Archon demonstrates three key principles in modern AI development:
-
-1. **Agentic Reasoning**: Planning, iterative feedback, and self-evaluation overcome the limitations of purely reactive systems
-2. **Domain Knowledge Integration**: Seamless embedding of frameworks like Pydantic AI and LangGraph within autonomous workflows
-3. **Scalable Architecture**: Modular design supporting maintainability, cost optimization, and ethical AI practices
-
-## Getting Started with V6 (current version)
-
-Since V6 is the current version of Archon, all the code for V6 is in both the main directory and `archon/iterations/v6-tool-library-integration` directory.
-
-Note that the examples/tool library for Archon is just starting out. Please feel free to contribute examples, MCP servers, and prebuilt tools!
-
-### Prerequisites
-- Docker (optional but preferred)
-- Python 3.11+
-- Supabase account (for vector database)
-- OpenAI/Anthropic/OpenRouter API key or Ollama for local LLMs (note that only OpenAI supports streaming in the Streamlit UI currently)
-
-### Installation
-
-#### Option 1: Docker (Recommended)
-1. Clone the repository:
-```bash
-git clone https://github.com/coleam00/archon.git
-cd archon
-```
-
-2. Run the Docker setup script:
-```bash
-# This will build both containers and start Archon
-python run_docker.py
-```
-
-3. Access the Streamlit UI at http://localhost:8501.
-
-> **Note:** `run_docker.py` will automatically:
-> - Build the MCP server container
-> - Build the main Archon container
-> - Run Archon with the appropriate port mappings
-> - Use environment variables from `.env` file if it exists
-
-#### Option 2: Local Python Installation
-1. Clone the repository:
-```bash
-git clone https://github.com/coleam00/archon.git
-cd archon
-```
-
-2. Install dependencies:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-3. Start the Streamlit UI:
-```bash
-streamlit run streamlit_ui.py
-```
-
-4. Access the Streamlit UI at http://localhost:8501.
-
-### Setup Process
-
-After installation, follow the guided setup process in the Intro section of the Streamlit UI:
-- **Environment**: Configure your API keys and model settings - all stored in `workbench/env_vars.json`
-- **Database**: Set up your Supabase vector database
-- **Documentation**: Crawl and index the Pydantic AI documentation
-- **Agent Service**: Start the agent service for generating agents
-- **Chat**: Interact with Archon to create AI agents
-- **MCP** (optional): Configure integration with AI IDEs
-
-The Streamlit interface will guide you through each step with clear instructions and interactive elements.
-There are a good amount of steps for the setup but it goes quick!
-
-### Troubleshooting
-
-If you encounter any errors when using Archon, please first check the logs in the "Agent Service" tab.
-Logs specifically for MCP are also logged to `workbench/logs.txt` (file is automatically created) so please
-check there. The goal is for you to have a clear error message before creating a bug here in the GitHub repo
-
-### Updating Archon
-
-#### Option 1: Docker
-To get the latest updates for Archon when using Docker:
-
-```bash
-# Pull the latest changes from the repository (from within the archon directory)
-git pull
-
-# Rebuild and restart the containers with the latest changes
-python run_docker.py
-```
-
-The `run_docker.py` script will automatically:
-- Detect and remove any existing Archon containers (whether running or stopped)
-- Rebuild the containers with the latest code
-- Start fresh containers with the updated version
-
-#### Option 2: Local Python Installation
-To get the latest updates for Archon when using local Python installation:
-
-```bash
-# Pull the latest changes from the repository (from within the archon directory)
-git pull
-
-# Install any new dependencies
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Restart the Streamlit UI
-# (If you're already running it, stop with Ctrl+C first)
-streamlit run streamlit_ui.py
-```
-
-This ensures you're always running the most recent version of Archon with all the latest features and bug fixes.
-
-## Project Evolution
-
-### V1: Single-Agent Foundation
-- Basic RAG-powered agent using Pydantic AI
-- Supabase vector database for documentation storage
-- Simple code generation without validation
-- [Learn more about V1](iterations/v1-single-agent/README.md)
-
-### V2: Agentic Workflow (LangGraph)
-- Multi-agent system with planning and execution separation
-- Reasoning LLM (O3-mini/R1) for architecture planning
-- LangGraph for workflow orchestration
-- Support for local LLMs via Ollama
-- [Learn more about V2](iterations/v2-agentic-workflow/README.md)
-
-### V3: MCP Support
-- Integration with AI IDEs like Windsurf and Cursor
-- Automated file creation and dependency management
-- FastAPI service for agent generation
-- Improved project structure and organization
-- [Learn more about V3](iterations/v3-mcp-support/README.md)
-
-### V4: Streamlit UI Overhaul
-- Docker support
-- Comprehensive Streamlit interface for managing all aspects of Archon
-- Guided setup process with interactive tabs
-- Environment variable management through the UI
-- Database setup and documentation crawling simplified
-- Agent service control and monitoring
-- MCP configuration through the UI
-- [Learn more about V4](iterations/v4-streamlit-ui-overhaul/README.md)
-
-### V5: Multi-Agent Coding Workflow
-- Specialized refiner agents for different autonomously improving the initially generated agent
-- Prompt refiner agent for optimizing system prompts
-- Tools refiner agent for specialized tool implementation
-- Agent refiner for optimizing agent configuration and dependencies
-- Cohesive initial agent structure before specialized refinement
-- Improved workflow orchestration with LangGraph
-- [Learn more about V5](iterations/v5-parallel-specialized-agents/README.md)
-
-### V6: Current - Tool Library and MCP Integration
-- Comprehensive library of prebuilt tools, examples, and agent templates
-- Integration with MCP servers for massive amounts of prebuilt tools
-- Advisor agent that recommends relevant tools and examples based on user requirements
-- Automatic incorporation of prebuilt components into new agents
-- Specialized tools refiner agent also validates and optimizes MCP server configurations
-- Streamlined access to external services through MCP integration
-- Reduced development time through component reuse
-- [Learn more about V6](iterations/v6-tool-library-integration/README.md)
-
-### Future Iterations
-- V7: LangGraph Documentation - Allow Archon to build Pydantic AI AND LangGraph agents
-- V8: Self-Feedback Loop - Automated validation and error correction
-- V9: Self Agent Execution - Testing and iterating on agents in an isolated environment
-- V10: Multi-Framework Support - Framework-agnostic agent generation
-- V11: Autonomous Framework Learning - Self-updating framework adapters
-- V12: Advanced RAG Techniques - Enhanced retrieval and incorporation of framework documentation
-- V13: MCP Agent Marketplace - Integrating Archon agents as MCP servers and publishing to marketplaces
-
-### Future Integrations
-- LangSmith
-- MCP marketplace
-- Other frameworks besides Pydantic AI
-- Other vector databases besides Supabase
-- [Local AI package](https://github.com/coleam00/local-ai-packaged) for the agent environment
-
-## Archon Agents Architecture
-
-The below diagram from the LangGraph studio is a visual representation of the Archon agent graph.
-
-<img src="public/ArchonGraph.png" alt="Archon Graph" />
-
-The flow works like this:
-
-1. You describe the initial AI agent you want to create
-2. The reasoner LLM creates the high level scope for the agent
-3. The primary coding agent uses the scope and documentation to create the initial agent
-4. Control is passed back to you to either give feedback or ask Archon to 'refine' the agent autonomously
-5. If refining autonomously, the specialized agents are invoked to improve the prompt, tools, and agent configuration
-6. The primary coding agent is invoked again with either user or specialized agent feedback
-7. The process goes back to step 4 until you say the agent is complete
-8. Once the agent is complete, Archon spits out the full code again with instructions for running it
-
-## File Architecture
-
-### Core Files
-- `streamlit_ui.py`: Comprehensive web interface for managing all aspects of Archon
-- `graph_service.py`: FastAPI service that handles the agentic workflow
-- `run_docker.py`: Script to build and run Archon Docker containers
-- `Dockerfile`: Container definition for the main Archon application
-
-### MCP Integration
-- `mcp/`: Model Context Protocol server implementation
-  - `mcp_server.py`: MCP server script for AI IDE integration
-  - `Dockerfile`: Container definition for the MCP server
-
-### Archon Package
-- `archon/`: Core agent and workflow implementation
-  - `archon_graph.py`: LangGraph workflow definition and agent coordination
-  - `pydantic_ai_coder.py`: Main coding agent with RAG capabilities
-  - `refiner_agents/`: Specialized agents for refining different aspects of the created agent
-    - `prompt_refiner_agent.py`: Optimizes system prompts
-    - `tools_refiner_agent.py`: Specializes in tool implementation
-    - `agent_refiner_agent.py`: Refines agent configuration and dependencies
-  - `crawl_pydantic_ai_docs.py`: Documentation crawler and processor
-
-### Utilities
-- `utils/`: Utility functions and database setup
-  - `utils.py`: Shared utility functions
-  - `site_pages.sql`: Database setup commands
-
-### Workbench
-- `workbench/`: Created at runtime, files specific to your environment
-  - `env_vars.json`: Environment variables defined in the UI are stored here (included in .gitignore, file is created automatically)
-  - `logs.txt`: Low level logs for all Archon processes go here
-  - `scope.md`: The detailed scope document created by the reasoner model at the start of each Archon execution
-
-## Deployment Options
-- **Docker Containers**: Run Archon in isolated containers with all dependencies included
-  - Main container: Runs the Streamlit UI and graph service
-  - MCP container: Provides MCP server functionality for AI IDEs
-- **Local Python**: Run directly on your system with a Python virtual environment
-
-### Docker Architecture
-The Docker implementation consists of two containers:
-1. **Main Archon Container**:
-   - Runs the Streamlit UI on port 8501
-   - Hosts the Graph Service on port 8100
-   - Built from the root Dockerfile
-   - Handles all agent functionality and user interactions
-
-2. **MCP Container**:
-   - Implements the Model Context Protocol for AI IDE integration
-   - Built from the mcp/Dockerfile
-   - Communicates with the main container's Graph Service
-   - Provides a standardized interface for AI IDEs like Windsurf, Cursor, Cline, and Roo Code
-
-When running with Docker, the `run_docker.py` script automates building and starting both containers with the proper configuration.
-
-## Database Setup
-
-The Supabase database uses the following schema:
-
-```sql
-CREATE TABLE site_pages (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    url TEXT,
-    chunk_number INTEGER,
-    title TEXT,
-    summary TEXT,
-    content TEXT,
-    metadata JSONB,
-    embedding VECTOR(1536) -- Adjust dimensions as necessary (i.e. 768 for nomic-embed-text)
-);
-```
-
-The Streamlit UI provides an interface to set up this database structure automatically.
-
-## Contributing
-
-We welcome contributions! Whether you're fixing bugs, adding features, or improving documentation, please feel free to submit a Pull Request.
-
-## License
-
-[MIT License](LICENSE)
+Poniżej znajdziesz zaktualizowany plan, który zawiera:
+1.  **Konkretną implementację i kod** z wykorzystaniem modeli Gemini.
+2.  **Zaawansowane ulepszenia** koncentrujące się na profesjonalizmie i bezpieczeństwie.
+3.  **Wizję przyszłych rozwiązań**, które uczynią "PrawoAsystent AI" liderem na rynku.
 
 ---
 
-For version-specific details:
-- [V1 Documentation](iterations/v1-single-agent/README.md)
-- [V2 Documentation](iterations/v2-agentic-workflow/README.md)
-- [V3 Documentation](iterations/v3-mcp-support/README.md)
-- [V4 Documentation](iterations/v4-streamlit-ui-overhaul/README.md)
-- [V5 Documentation](iterations/v5-parallel-specialized-agents/README.md)
-- [V6 Documentation](iterations/v6-tool-library-integration/README.md)
+### **1. Zaktualizowana Implementacja z Gemini: Kod i Architektura**
+
+Główna zmiana dotyczy serwisu AI. Zastępujemy komponenty OpenAI odpowiednikami od Google. Framework LangChain znacznie to ułatwia, pozwalając na podmianę "klocków" bez przepisywania całej logiki.
+
+**Kluczowe zalety Gemini 1.5 dla tego projektu:**
+
+*   **Ogromne okno kontekstowe (1 milion tokenów):** To rewolucja dla prawa. Możesz załadować całe akta sprawy, obszerne ustawy czy umowy (setki stron) bezpośrednio do kontekstu modelu, co minimalizuje ryzyko "gubienia" informacji i pozwala na bardziej holistyczną analizę bez skomplikowanego chunkingu.
+*   **Wydajność i koszt (Gemini Flash):** Model Flash jest zoptymalizowany pod kątem szybkości i niższych kosztów, idealny do masowych, mniej złożonych zadań, jak generowanie standardowych snippetów, podsumowywanie e-maili czy obsługa czatów o niższym priorytecie.
+*   **Natywna multimodalność:** Możliwość analizy wideo i audio otwiera drzwi do przyszłych funkcjonalności, takich jak transkrypcja i analiza rozpraw sądowych.
+
+#### **Zaktualizowany Kod `ai_service.py` (Python z LangChain i Flask)**
+
+**Instalacja nowych bibliotek:**
+`pip install -U google-generativeai langchain-google-genai`
+
+```python
+from flask import Flask, request, jsonify
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+# Zmiana 1: Importujemy embeddingi i model czatu od Google
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
+from langchain.chains import RetrievalQA
+import google.generativeai as genai
+import os
+
+# --- Konfiguracja ---
+# Ustaw swój klucz API Google
+os.environ["GOOGLE_API_KEY"] = "YOUR_GOOGLE_API_KEY"
+genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+
+app = Flask(__name__)
+
+# W realnej aplikacji te obiekty byłyby zarządzane w bardziej zaawansowany sposób
+# np. ładowane na żądanie per kancelaria
+qa_chain_pro = None
+qa_chain_flash = None
+
+def initialize_rag_pipeline(file_path, model_name="gemini-1.5-pro-latest"):
+    """
+    Indeksuje dokument i tworzy potok RAG dla wybranego modelu Gemini.
+    """
+    # 1. Ładowanie i dzielenie dokumentu (nadal potrzebne dla bardzo dużych zbiorów)
+    loader = PyPDFLoader(file_path)
+    documents = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
+    texts = text_splitter.split_documents(documents)
+
+    # 2. Tworzenie embeddingów za pomocą modelu Google
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+    
+    # 3. Zapis w bazie wektorowej (ChromaDB)
+    # W profesjonalnym wdrożeniu `collection_name` byłoby unikalne dla każdej kancelarii
+    vector_store = Chroma.from_documents(texts, embeddings, collection_name=f"prawo-asystent-{model_name}")
+
+    # 4. Inicjalizacja modelu czatu Gemini
+    llm = ChatGoogleGenerativeAI(model=model_name, temperature=0.1, convert_system_message_to_human=True)
+    
+    # 5. Stworzenie łańcucha QA (RetrievalQA)
+    retriever = vector_store.as_retriever()
+    qa_chain = RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=retriever,
+        return_source_documents=True # Kluczowe dla weryfikacji!
+    )
+    return qa_chain
+
+@app.route('/upload_and_prepare', methods=['POST'])
+def upload_and_prepare():
+    global qa_chain_pro, qa_chain_flash
+    
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    
+    file_path = f"./temp_{file.filename}"
+    file.save(file_path)
+
+    # Inicjalizujemy potoki dla obu modeli
+    qa_chain_pro = initialize_rag_pipeline(file_path, "gemini-1.5-pro-latest")
+    qa_chain_flash = initialize_rag_pipeline(file_path, "gemini-1.5-flash-latest")
+    
+    os.remove(file_path)
+    return jsonify({"message": "Document processed. Both Pro and Flash models are ready."})
+
+@app.route('/ask', methods=['POST'])
+def ask_question():
+    data = request.get_json()
+    query = data.get('query')
+    # Pozwalamy klientowi wybrać model w zależności od zadania
+    use_model = data.get('model', 'flash') # Domyślnie szybszy i tańszy model
+
+    if use_model == 'pro':
+        chain = qa_chain_pro
+    else:
+        chain = qa_chain_flash
+
+    if not chain:
+        return jsonify({"error": "Pipeline not initialized. Upload a document first."}), 400
+
+    try:
+        result = chain({"query": query})
+        
+        # Zwracamy odpowiedź WRAZ ze źródłami, na których się oparła
+        source_documents = [
+            {"content": doc.page_content, "source": doc.metadata.get('source', 'N/A')} 
+            for doc in result['source_documents']
+        ]
+        
+        # W realnej aplikacji tutaj zapisalibyśmy wszystko do bazy audytowej
+        return jsonify({
+            "answer": result['result'],
+            "sources": source_documents
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
+
+```
+
+---
+
+### **2. Profesjonalizm i Bezpieczeństwo: Kluczowe Ulepszenia**
+
+Aby zbudować zaufanie w branży prawniczej, musimy wyjść poza standardy.
+
+#### **Ulepszenie 1: "Sejf Danych" - Izolacja i Szyfrowanie na Poziomie Kancelarii**
+
+*   **Problem:** Dane jednej kancelarii nie mogą mieć absolutnie żadnej styczności z danymi innej.
+*   **Rozwiązanie Techniczne:**
+    *   **Izolacja Bazy Wektorowej:** Zamiast jednej bazy ChromaDB, każda kancelaria (tenant) otrzymuje własną, dedykowaną kolekcję w bazie wektorowej, np. `collection_name="kancelaria_id_123"`. W bardziej zaawansowanym scenariuszu, każda kancelaria ma własną, odizolowaną instancję bazy danych (np. osobny kontener Docker).
+    *   **Szyfrowanie w Spoczynku (At-Rest):** Wszystkie dane, zarówno w PostgreSQL, jak i w bazie wektorowej, muszą być szyfrowane na poziomie dysku. Usługi chmurowe (jak Google Cloud, AWS) oferują to jako standard.
+    *   **Szyfrowanie w Tranzycie (In-Transit):** Cała komunikacja (frontend-backend, backend-AI service, backend-baza danych) musi odbywać się przez TLS 1.2+.
+    *   **Zarządzanie Kluczami (KMS):** W planie Enterprise można zaoferować klientom możliwość użycia własnych kluczy szyfrujących (Customer-Managed Encryption Keys), co daje im pełną kontrolę nad danymi.
+
+#### **Ulepszenie 2: "Niezaprzeczalny Ślad Audytowy" (Immutable Audit Log)**
+
+*   **Problem:** W razie sporu lub błędu, musi istnieć możliwość odtworzenia, co dokładnie zrobił system.
+*   **Rozwiązanie Techniczne:**
+    *   Stworzenie dedykowanej tabeli `AuditLog` w bazie danych, która jest *tylko do zapisu* (append-only).
+    *   Każde zapytanie do AI, jego wynik, pobrane źródła, a nawet informacja zwrotna od użytkownika ("odpowiedź pomocna" / "odpowiedź błędna") są zapisywane jako oddzielny, niezmienialny rekord.
+    *   **Logowanie:** `(timestamp, user_id, law_firm_id, query_text, model_used, retrieved_sources_hash, generated_response, user_feedback)`. Hash źródeł zapewnia integralność.
+
+#### **Ulepszenie 3: Zmniejszanie Halucynacji z "Podwójnym Sprawdzeniem"**
+
+*   **Problem:** Modele AI mogą generować informacje, które brzmią wiarygodnie, ale nie mają pokrycia w dostarczonych źródłach.
+*   **Rozwiązanie Techniczne (zaawansowany łańcuch):**
+    1.  **Krok 1 (Standardowy RAG):** Zadaj pytanie i uzyskaj wstępną odpowiedź wraz ze źródłami.
+    2.  **Krok 2 (Weryfikacja):** Stwórz drugi, oddzielny prompt dla AI, który zawiera:
+        *   Oryginalne pytanie.
+        *   Wygenerowaną odpowiedź.
+        *   Tylko te fragmenty źródeł, na które powołuje się pierwsza odpowiedź.
+        *   **Polecenie:** "Oceń w skali od 1 do 5, czy poniższa odpowiedź jest w pełni poparta dostarczonym kontekstem. Jeśli nie, zidentyfikuj fragmenty, które nie mają pokrycia w źródłach."
+    3.  Jeśli ocena jest wysoka (np. 5/5), zwróć odpowiedź użytkownikowi. Jeśli jest niska, oznacz odpowiedź jako "wymagającą weryfikacji" i poinformuj użytkownika, że AI nie znalazło jednoznacznego potwierdzenia.
+
+---
+
+### **3. Przyszłe Rozwiązania i Innowacyjne Wdrożenia**
+
+Wykorzystajmy pełen potencjał Gemini, aby stworzyć funkcje, których konkurencja nie ma.
+
+#### **Wdrożenie 1: Multimodalny Asystent Prawny (6-12 miesięcy)**
+
+*   **Wizja:** Prawnik wrzuca do aplikacji nagranie audio z przesłuchania świadka lub rozprawy.
+*   **Funkcjonalność:**
+    1.  **Automatyczna Transkrypcja:** Gemini dokonuje transkrypcji nagrania na tekst.
+    2.  **Identyfikacja Mówców:** System (po krótkim treningu) rozpoznaje, kto mówi.
+    3.  **Inteligentna Analiza:** Prawnik zadaje pytania do transkrypcji:
+        *   "Podsumuj zeznania świadka Jana Kowalskiego."
+        *   "Znajdź wszystkie momenty, w których poruszano temat umowy z dnia X."
+        *   "Oceń spójność zeznań świadka na podstawie całej transkrypcji."
+*   **Implementacja:** Wykorzystanie API Gemini do przetwarzania plików audio. Wynikowa transkrypcja staje się kolejnym dokumentem w bazie wiedzy kancelarii, gotowym do analizy przez RAG.
+
+#### **Wdrożenie 2: Proaktywny Agent do Monitorowania Zmian w Prawie (12-24 miesiące)**
+
+*   **Wizja:** Aplikacja przestaje być tylko reaktywnym narzędziem. Staje się proaktywnym doradcą.
+*   **Funkcjonalność:**
+    1.  **Monitoring Źródeł:** Agent AI regularnie skanuje określone źródła (np. Dziennik Ustaw, strony sejmowe, portale branżowe).
+    2.  **Analiza Wpływu:** Gdy wykryje nową ustawę lub nowelizację w obszarze zainteresowania kancelarii (np. prawo budowlane), analizuje jej treść.
+    3.  **Personalizowane Alerty:** System wysyła powiadomienie do administratora kancelarii: "Uwaga: Opublikowano nowelizację Prawa Budowlanego. Może ona wpłynąć na 15 Twoich snippetów w kategorii 'Umowy o roboty budowlane'. **Czy chcesz, abym przygotował propozycje aktualizacji tych klauzul?**"
+*   **Implementacja:** Wykorzystanie **Function Calling** w Gemini. Agent ma dostęp do "narzędzi" - funkcji do pobierania danych z internetu i przeszukiwania wewnętrznej bazy snippetów.
+
+#### **Wdrożenie 3: Asystent Negocjacji Umów w Czasie Rzeczywistym (wersja Enterprise)**
+
+*   **Wizja:** Prawnik otrzymuje projekt umowy od drugiej strony i wkleja go do aplikacji.
+*   **Funkcjonalność:**
+    1.  **Analiza Porównawcza:** AI porównuje otrzymaną umowę z "złotym standardem" (wzorcowymi umowami) kancelarii.
+    2.  **Identyfikacja Ryzyk:** Automatycznie flaguje klauzule, które są niekorzystne, nietypowe lub nieobecne w porównaniu do wzorca.
+    3.  **Propozycje Zmian:** Dla każdej oflagowanej klauzuli, AI proponuje alternatywną, bezpieczniejszą wersję opartą na snippetach kancelarii.
+    4.  **Raport Negocjacyjny:** Generuje czytelny raport podsumowujący wszystkie zidentyfikowane punkty do negocjacji.
+*   **Implementacja:** Wykorzystanie ogromnego okna kontekstowego Gemini 1.5 Pro do analizy dwóch długich dokumentów jednocześnie i wyciągania szczegółowych różnic.
+
+Przyjmując tę strategię, "PrawoAsystent AI" nie będzie tylko kolejnym narzędziem, ale stanie się centralnym systemem nerwowym kancelarii, zwiększającym jej bezpieczeństwo, profesjonalizm i przewagę konkurencyjną.
